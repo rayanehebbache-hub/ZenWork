@@ -1,5 +1,3 @@
-ReadME
-
 Voir :
 - manuel_utilisateur dans docs
 - manuel_maintainer dans docs
