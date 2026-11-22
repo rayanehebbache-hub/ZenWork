@@ -1,2 +1,17 @@
-# ZenWork
-Projet universitaire de groupe réalisé dans le cadre de l'UE Projet Informatique ayant pour but de concevoir une application web interactive autour du suivi du bien-être en entreprise via des questionnaires dynamiques, un système de notifications et la présence d’une intelligence artificielle.
+ReadME
+
+Voir :
+- manuel_utilisateur dans docs
+- manuel_maintainer dans docs
+
+Technologies : React, HTML, JavaScript, CSS, Supabase, GitLab, Python
+
+Projet réalisé par :
+- Mohamed Aldyab
+- Oualid Felkaoui
+- Abderrahim Hermez
+- Lilia Ait-Mokhtar
+- Rayane Hebbache
+- Nassim Ichchou
+
+La base de données Supabase ne fonctionne plus.
