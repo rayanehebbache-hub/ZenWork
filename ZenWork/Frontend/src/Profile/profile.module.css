@@ -1,0 +1,209 @@
+/* Purple & white design – aligned with Ressources dashboard */
+.page {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #1A202C;
+}
+
+.section {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+.title {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1A202C;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #718096;
+}
+
+.input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+  color: #1A202C;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6C5DD3;
+  box-shadow: 0 0 0 2px rgba(108, 93, 211, 0.15);
+}
+
+.inputBlocked {
+  background: #F7F8FA;
+  color: #4A5568;
+  cursor: not-allowed;
+}
+
+.inputBlocked:focus {
+  border-color: #E2E8F0;
+  box-shadow: none;
+}
+
+.button {
+  align-self: flex-start;
+  padding: 0.5rem 1.25rem;
+  border-radius: 10px;
+  border: none;
+  background: #6C5DD3;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.button:hover {
+  background: #5b4bc4;
+}
+
+.muted {
+  font-size: 0.85rem;
+  color: #A0AEC0;
+  margin: 0;
+}
+
+.error {
+  color: #E53E3E;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.success {
+  color: #38A169;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: white;
+  color: #718096;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.backButton:hover {
+  background: #F7F8FA;
+  color: #1A202C;
+}
+
+.deleteButton {
+  background: #E53E3E;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.deleteButton:hover {
+  transform: scale(1.05);
+}
+
+/* Dark mode — aligné PsychoBot / Layout */
+@media (prefers-color-scheme: dark) {
+  .page {
+    color: #e8eaf0;
+    color-scheme: dark;
+  }
+
+  .section {
+    background: #13161e;
+    border-color: #252a38;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .title {
+    color: #e8eaf0;
+  }
+
+  .label {
+    color: #9ca3af;
+  }
+
+  .input {
+    background: #0d0f14;
+    border-color: #252a38;
+    color: #e8eaf0;
+  }
+
+  .input:focus {
+    border-color: #7c6ff7;
+    box-shadow: 0 0 0 2px rgba(124, 111, 247, 0.25);
+  }
+
+  .inputBlocked {
+    background: #1a1f2e;
+    color: #9ca3af;
+    border-color: #252a38;
+  }
+
+  .inputBlocked:focus {
+    border-color: #252a38;
+  }
+
+  .button {
+    background: #7c6ff7;
+  }
+
+  .button:hover {
+    background: #6d5ff0;
+  }
+
+  .muted {
+    color: #6b7280;
+  }
+
+  .error {
+    color: #fca5a5;
+  }
+
+  .success {
+    color: #6ee7b7;
+  }
+
+  .backButton {
+    background: #13161e;
+    border-color: #252a38;
+    color: #9ca3af;
+  }
+
+  .backButton:hover {
+    background: #1a1f2e;
+    color: #e8eaf0;
+  }
+}

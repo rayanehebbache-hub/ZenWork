@@ -1,0 +1,320 @@
+/* Purple & white design – aligned with Ressources dashboard */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #1A202C;
+}
+
+.title {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1A202C;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  background: white;
+  margin-bottom: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid #E2E8F0;
+  color: #1A202C;
+}
+
+.table th {
+  background: #F7F8FA;
+  color: #718096;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.table td {
+  background: white;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover td {
+  background: #F7F8FA;
+}
+
+.rowHighlight td {
+  background: #EEEBFB;
+  color: #1A202C;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #EEEBFB;
+  color: #6C5DD3;
+}
+
+.editBtn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 10px;
+  border: none;
+  background: #6C5DD3;
+  color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.editBtn:hover:not(:disabled) {
+  background: #5b4bc4;
+}
+
+.editBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editCell {
+  padding: 1.25rem !important;
+  background: #F7F8FA;
+  border-bottom: 1px solid #E2E8F0;
+  color: #1A202C;
+}
+
+.editForm {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #718096;
+}
+
+.input,
+.select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: white;
+  color: #1A202C;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #6C5DD3;
+  box-shadow: 0 0 0 2px rgba(108, 93, 211, 0.15);
+}
+
+.formActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+
+.saveBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: #6C5DD3;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.saveBtn:hover {
+  background: #5b4bc4;
+}
+
+.cancelBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: white;
+  color: #718096;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.cancelBtn:hover {
+  background: #F7F8FA;
+  color: #1A202C;
+}
+
+.error {
+  color: #E53E3E;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.success {
+  color: #38A169;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.actions {
+  margin-top: 0.5rem;
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: white;
+  color: #718096;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.backButton:hover {
+  background: #F7F8FA;
+  color: #1A202C;
+}
+
+/* Dark mode — aligné PsychoBot / Layout */
+@media (prefers-color-scheme: dark) {
+  .page {
+    color: #e8eaf0;
+    color-scheme: dark;
+  }
+
+  .title {
+    color: #e8eaf0;
+  }
+
+  .tableWrap {
+    background: #13161e;
+    border-color: #252a38;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .table th,
+  .table td {
+    border-bottom-color: #252a38;
+    color: #e8eaf0;
+  }
+
+  .table th {
+    background: #1a1f2e;
+    color: #9ca3af;
+  }
+
+  .table td {
+    background: #13161e;
+  }
+
+  .table tbody tr:hover td {
+    background: #1a1f2e;
+  }
+
+  .rowHighlight td {
+    background: #252045;
+    color: #e8eaf0;
+  }
+
+  .badge {
+    background: rgba(124, 111, 247, 0.2);
+    color: #c4b5fd;
+  }
+
+  .editBtn {
+    background: #7c6ff7;
+  }
+
+  .editBtn:hover:not(:disabled) {
+    background: #6d5ff0;
+  }
+
+  .editCell {
+    background: #1a1f2e;
+    border-bottom-color: #252a38;
+    color: #e8eaf0;
+  }
+
+  .label {
+    color: #9ca3af;
+  }
+
+  .input,
+  .select {
+    background: #0d0f14;
+    border-color: #252a38;
+    color: #e8eaf0;
+  }
+
+  .input:focus,
+  .select:focus {
+    border-color: #7c6ff7;
+    box-shadow: 0 0 0 2px rgba(124, 111, 247, 0.25);
+  }
+
+  .saveBtn {
+    background: #7c6ff7;
+  }
+
+  .saveBtn:hover {
+    background: #6d5ff0;
+  }
+
+  .cancelBtn {
+    background: #13161e;
+    border-color: #252a38;
+    color: #9ca3af;
+  }
+
+  .cancelBtn:hover {
+    background: #252a38;
+    color: #e8eaf0;
+  }
+
+  .error {
+    color: #fca5a5;
+  }
+
+  .success {
+    color: #6ee7b7;
+  }
+
+  .backButton {
+    background: #13161e;
+    border-color: #252a38;
+    color: #9ca3af;
+  }
+
+  .backButton:hover {
+    background: #1a1f2e;
+    color: #e8eaf0;
+  }
+}

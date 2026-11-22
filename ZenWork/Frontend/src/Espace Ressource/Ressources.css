@@ -1,0 +1,331 @@
+/* Conteneur de la page */
+.ressources-internal-container {
+  padding-top: 10px;
+}
+
+/* Grille de vidéos */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* C'est ça qui fait les colonnes ! */
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Style des cartes */
+.video-card {
+  background: white;
+  padding: 18px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-8px);
+}
+
+.video-thumb {
+  height: 160px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  position: relative;
+  cursor: pointer;
+}
+
+.play-overlay {
+  font-size: 35px;
+  color: white;
+  background: rgba(255,255,255,0.2);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+}
+
+.cat-label {
+  color: #6C5DD3;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Boutons de filtre */
+.filter-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.filter-chip {
+  padding: 10px 22px;
+  border-radius: 14px;
+  border: none;
+  background: white;
+  color: #808191;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.3s;
+}
+
+.filter-chip.active {
+  background: #6C5DD3;
+  color: white;
+}
+/* ============================================================ */
+/* FIX PROBLÈME 1 : Boutons de Filtre (Contour fin et clean) */
+/* ============================================================ */
+
+/* On cible tes chips de filtre pour les réinitialiser proprement */
+.filter-container .filter-chip {
+  /* 1. On supprime les contours par défaut moches */
+  outline: none !important;
+  box-shadow: none !important;
+  
+  /* 2. On applique un contour fin, complet et uniforme */
+  border: 1.5px solid #d1d1d1; /* Une couleur neutre pour le contour par défaut */
+  
+  /* Assurons-nous que le rayon de bordure est bien appliqué au contour */
+  border-radius: 20px;
+  
+  /* Un peu de transition pour l'effet au survol */
+  transition: all 0.2s ease;
+}
+
+/* On stylise l'état actif (quand le bouton est violet) */
+.filter-container .filter-chip.active {
+  /* Le contour devient violet pour un look plus "complet" */
+  border-color: #6C5DD3;
+  
+  /* Et on applique le fond violet comme avant */
+  background-color: #6C5DD3;
+  color: white;
+}
+
+/* Un petit effet de contour au survol pour le feedback */
+.filter-container .filter-chip:hover:not(.active) {
+  border-color: #6C5DD3; /* Le contour devient violet clair au survol */
+  background-color: rgba(108, 93, 211, 0.05); /* Un fond très léger */
+}
+
+
+/* 1. On dit à la carte de s'adapter à la taille de son contenu (efface la hauteur fixe) */
+.video-grid .video-card {
+  display: flex;
+  flex-direction: column;
+  height: auto !important; /* Force la carte à ne plus avoir une hauteur bloquée */
+  min-height: 320px; /* Une bonne hauteur de base */
+  overflow: hidden; /* Empêche quoi que ce soit de déborder du blanc */
+}
+
+/* 2. Le corps de la carte prend l'espace sous l'image */
+.video-grid .video-card .video-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Remplit le vide */
+}
+
+/* 3. On s'assure que le titre ne pousse pas trop fort */
+.video-grid .video-card .video-body h3 {
+  flex-grow: 0;
+  margin-bottom: 10px;
+}
+
+/* 4. LA MAGIE EST ICI : On pousse le texte "Par XXX" et le bouton tout en bas */
+.video-grid .video-card .video-body p {
+  margin-top: auto; /* Pousse cet élément (et ceux en dessous) vers le bas de la carte */
+  margin-bottom: 15px;
+}
+
+/* 5. Le bouton se place sagement en bas de la zone blanche */
+.video-grid .video-card .video-body .start-btn {
+  margin-top: 0;
+  width: 100%; /* Étend le bouton sur toute la largeur (optionnel, mais souvent plus moderne) */
+}
+
+/* --- ACTIONS RH --- */
+.ressources-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.add-ressource-btn {
+  background-color: #00C38E;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.add-ressource-btn:hover {
+  transform: scale(1.05);
+}
+
+.rh-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.rh-edit-btn, .rh-delete-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.rh-edit-btn {
+  background: #F4F7FE;
+  color: #6C5DD3;
+}
+
+.rh-delete-btn {
+  background: #FFF5F5;
+  color: #E53E3E;
+}
+
+.rh-edit-btn:hover { background: #E2E8F0; }
+.rh-delete-btn:hover { background: #FED7D7; }
+
+/* --- MODAL (POPUP CRUD) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #1A202C;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4A5568;
+  margin-bottom: 5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  padding: 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-family: inherit;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.cancel-btn {
+  background: none;
+  border: none;
+  color: #718096;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #6C5DD3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .section-title { color: #E2E8F0; }
+  
+  .filter-chip { 
+    background: #1A202C; 
+    color: #A0AEC0; 
+  }
+  .filter-chip.active { 
+    background: #6C5DD3; 
+    color: white; 
+  }
+
+  .video-card { 
+    background: #1A202C; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+  }
+  .video-body h3 { color: #E2E8F0; }
+  .video-body p { color: #A0AEC0; }
+  
+  .start-btn { 
+    background: #2D3748; 
+    color: #8A7EE5; 
+  }
+  .start-btn:hover { background: #4A5568; }
+
+  .rh-edit-btn { background: #2D3748; color: #8A7EE5; }
+  .rh-edit-btn:hover { background: #4A5568; }
+  .rh-delete-btn { background: #4A1515; color: #FC8181; }
+  .rh-delete-btn:hover { background: #742A2A; }
+
+  .modal-content { 
+    background: #1A202C; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
+  }
+  .modal-content h2 { color: #E2E8F0; }
+  .form-group label { color: #A0AEC0; }
+  .form-group input, 
+  .form-group select, 
+  .form-group textarea {
+    background: #2D3748;
+    color: #E2E8F0;
+    border: 1px solid #4A5568;
+  }
+  .cancel-btn { color: #A0AEC0; }
+}

@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.title {
+  font-size: 18px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    background-color: #1a2023;
+  }
+  .title {
+    font-size: 18px;
+  }
+}
