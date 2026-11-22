@@ -1,0 +1,21 @@
+# --- Noyau Django & API ---
+asgiref==3.11.1
+Django==6.0.2
+sqlparse==0.5.5
+djangorestframework
+django-cors-headers
+
+# --- Sécurité & Authentification ---
+PyJWT[crypto]
+requests
+
+# --- Intelligence Artificielle ---
+groq
+google-generativeai
+
+# --- Base de données PostgreSQL ---
+psycopg[binary,pool]
+psycopg2-binary
+
+# --- Utilitaires ---
+python-dotenv

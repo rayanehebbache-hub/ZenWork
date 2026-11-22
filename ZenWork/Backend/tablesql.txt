@@ -1,0 +1,350 @@
+CREATE TABLE IF NOT EXISTS "profiles" (
+  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  role text NOT NULL CHECK (role IN ('RH', 'EMPLOYE')),
+  nom text NOT NULL,
+  prenom text NOT NULL,
+  service text,
+  date_embauche date,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS "planning" (
+  id bigserial PRIMARY KEY,
+  utilisateur_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  date_debut timestamptz NOT NULL,
+  date_fin timestamptz NOT NULL,
+  commentaire text,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now(),
+  CHECK (date_fin > date_debut)
+);
+
+CREATE INDEX IF NOT EXISTS idx_planning_user ON planning(utilisateur_id);
+
+CREATE TABLE IF NOT EXISTS "demande_changement" (
+  id bigserial PRIMARY KEY,
+  utilisateur_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  type_demande text CHECK (type_demande IN ('CONGE', 'HORAIRE', 'ECHANGE')),
+  motif text,
+  statut text DEFAULT 'EN_ATTENTE' CHECK (statut IN ('EN_ATTENTE', 'ACCEPTEE', 'REFUSEE')),
+  valide_par uuid REFERENCES profiles(id),
+  date_traitement timestamptz,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_demande_user ON demande_changement(utilisateur_id);
+
+CREATE TABLE IF NOT EXISTS "alerte_burnout" (
+  id bigserial PRIMARY KEY,
+  utilisateur_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  niveau_urgence integer CHECK (niveau_urgence BETWEEN 1 AND 3),
+  statut text DEFAULT 'NOUVEAU' CHECK (statut IN ('NOUVEAU', 'EN_COURS', 'TRAITE')),
+  commentaire_rh text,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_alerte_user ON alerte_burnout(utilisateur_id);
+
+CREATE TABLE IF NOT EXISTS "questionnaire" (
+  id bigserial PRIMARY KEY,
+  titre text NOT NULL,
+  description text,
+  structure_json jsonb NOT NULL,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS "reponse_questionnaire" (
+  id bigserial PRIMARY KEY,
+  utilisateur_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  questionnaire_id bigint REFERENCES questionnaire(id) ON DELETE CASCADE,
+  reponse_json jsonb NOT NULL,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_reponse_user ON reponse_questionnaire(utilisateur_id);
+
+CREATE TABLE IF NOT EXISTS "session_ia" (
+  id bigserial PRIMARY KEY,
+  utilisateur_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  resume_anonymise text,
+  score_risque integer,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_session_user ON session_ia(utilisateur_id);
+
+alter table profiles enable row level security;
+alter table planning enable row level security;
+alter table demande_changement enable row level security;
+alter table alerte_burnout enable row level security;
+alter table reponse_questionnaire enable row level security;
+alter table session_ia enable row level security;
+
+-- CLEAN POLICIES
+
+drop policy if exists "User can create own profile" on profiles;
+drop policy if exists "Select own profile" on profiles;
+drop policy if exists "Update own profile" on profiles;
+drop policy if exists "RH can read all profiles" on profiles;
+
+drop policy if exists "Planning: employe voit son planning" on planning;
+drop policy if exists "Planning: RH voit tout" on planning;
+drop policy if exists "Planning: RH modifie" on planning;
+
+drop policy if exists "Demande: employe voit ses demandes" on demande_changement;
+drop policy if exists "Demande: employe cree sa demande" on demande_changement;
+drop policy if exists "Demande: employe modifie sa demande en attente" on demande_changement;
+drop policy if exists "Demande: RH voit tout" on demande_changement;
+drop policy if exists "Demande: RH traite" on demande_changement;
+
+drop policy if exists "Alerte: employe voit ses alertes" on alerte_burnout;
+drop policy if exists "Alerte: RH voit tout" on alerte_burnout;
+drop policy if exists "Alerte: RH cree" on alerte_burnout;
+drop policy if exists "Alerte: RH modifie" on alerte_burnout;
+
+drop policy if exists "Reponse: employe voit ses reponses" on reponse_questionnaire;
+drop policy if exists "Reponse: employe insere ses reponses" on reponse_questionnaire;
+drop policy if exists "Reponse: RH voit tout" on reponse_questionnaire;
+
+drop policy if exists "Session IA: employe voit ses sessions" on session_ia;
+drop policy if exists "Session IA: employe insere ses sessions" on session_ia;
+drop policy if exists "Session IA: RH voit tout" on session_ia;
+drop policy if exists "Session IA: RH cree" on session_ia;
+drop policy if exists "Session IA: RH modifie" on session_ia;
+
+create policy "User can create own profile"
+on profiles
+for insert
+with check (auth.uid() = id);
+
+create policy "Select own profile"
+on profiles
+for select
+using (auth.uid() = id);
+
+create policy "Update own profile"
+on profiles
+for update
+using (auth.uid() = id)
+with check (auth.uid() = id);
+
+create policy "RH can read all profiles"
+on profiles
+for select
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+
+-- PLANNING
+
+create policy "Planning: employe voit son planning"
+on planning
+for select
+using (auth.uid() = utilisateur_id);
+
+create policy "Planning: RH voit tout"
+on planning
+for select
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+create policy "Planning: RH modifie"
+on planning
+for all
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+)
+with check (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+
+-- DEMANDE_CHANGEMENT
+
+create policy "Demande: employe voit ses demandes"
+on demande_changement
+for select
+using (auth.uid() = utilisateur_id);
+
+create policy "Demande: employe cree sa demande"
+on demande_changement
+for insert
+with check (auth.uid() = utilisateur_id);
+
+create policy "Demande: employe modifie sa demande en attente"
+on demande_changement
+for update
+using (auth.uid() = utilisateur_id and statut = 'EN_ATTENTE')
+with check (auth.uid() = utilisateur_id and statut = 'EN_ATTENTE');
+
+create policy "Demande: RH voit tout"
+on demande_changement
+for select
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+create policy "Demande: RH traite"
+on demande_changement
+for update
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+)
+with check (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+
+-- ALERTE_BURNOUT
+
+create policy "Alerte: employe voit ses alertes"
+on alerte_burnout
+for select
+using (auth.uid() = utilisateur_id);
+
+create policy "Alerte: RH voit tout"
+on alerte_burnout
+for select
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+create policy "Alerte: RH cree"
+on alerte_burnout
+for insert
+with check (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+create policy "Alerte: RH modifie"
+on alerte_burnout
+for update
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+)
+with check (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+
+-- REPONSE_QUESTIONNAIRE
+
+create policy "Reponse: employe voit ses reponses"
+on reponse_questionnaire
+for select
+using (auth.uid() = utilisateur_id);
+
+create policy "Reponse: employe insere ses reponses"
+on reponse_questionnaire
+for insert
+with check (auth.uid() = utilisateur_id);
+
+create policy "Reponse: RH voit tout"
+on reponse_questionnaire
+for select
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+
+-- SESSION_IA
+
+create policy "Session IA: employe voit ses sessions"
+on session_ia
+for select
+using (auth.uid() = utilisateur_id);
+
+create policy "Session IA: employe insere ses sessions"
+on session_ia
+for insert
+with check (auth.uid() = utilisateur_id);
+
+create policy "Session IA: RH voit tout"
+on session_ia
+for select
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+create policy "Session IA: RH cree"
+on session_ia
+for insert
+with check (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
+
+create policy "Session IA: RH modifie"
+on session_ia
+for update
+using (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+)
+with check (
+  exists (
+    select 1
+    from profiles p
+    where p.id = auth.uid() and p.role = 'RH'
+  )
+);
